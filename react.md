@@ -1,3 +1,7 @@
+### Project structure
+Create 'components' and 'containers' folders in 'src' and place stateless components
+in 'components' and stateful components in 'containers'
+
 ### How to use async / await with fetch (no more .then())
 
 ```
