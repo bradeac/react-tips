@@ -98,3 +98,61 @@ class App extends Component<IProps, IState> {
 
 export default App
 ```
+
+### Route-based code-splitting (vanilla)
+
+AsyncComponent:
+```
+import React from 'react'
+
+export default function asyncComponent(importComponent) {
+    class AsyncComponent extends React.Component {
+        constructor(props) {
+            super(props)
+
+            this.state = {
+                component: null
+            }
+        }
+
+        async componentDidMount() {
+            const { default: component } = await importComponent()
+            
+            this.setState({ component })        
+        }
+
+        render() {
+            const Component = this.state.component
+
+            return Component ? <Component {...this.props} /> : null
+        }
+    }
+
+    return AsyncComponent
+}
+```
+
+Main.js:
+```
+import React from 'react'
+import { Switch, Route } from 'react-router-dom'
+
+import AsyncComponent from './AsyncComponent'
+
+const AsyncHome = AsyncComponent(() => import ('./Home'))
+const AsyncDashboard = AsyncComponent(() => import ('./Dashboard'))
+const AsyncAbout = AsyncComponent(() => import ('./About'))
+
+const Main = () => (
+  <main>
+    <Switch>
+      <Route exact path='/' component={AsyncHome}/>
+      <Route path='/dashboard' component={AsyncDashboard}/>
+      <Route path='/about' component={AsyncAbout}/>
+    </Switch>
+  </main>
+)
+
+export default Main
+
+```
