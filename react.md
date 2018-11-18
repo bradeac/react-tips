@@ -180,7 +180,7 @@ import { Switch, Route } from 'react-router-dom'
 import Loadable from './Loadable'
 
 const AsyncHome = Loadable({
-	loader: () => import ('./Home'),
+	loader: () => import (/* webpackChunkName: "home" */ './Home'), // this names the file home.chunk.js
 	loading(props) {
 		if (props.error) {
 			return <div>Error !</div>
@@ -195,7 +195,7 @@ const AsyncHome = Loadable({
 })
 
 const AsyncDashboard = Loadable({
-	loader: () => import ('./Dashboard'),
+	loader: () => import (/* webpackChunkName: "dashboard" */ './Dashboard'),
 	loading(props) {
 		if (props.error) {
 			return <div>Error !</div>
@@ -210,7 +210,7 @@ const AsyncDashboard = Loadable({
 })
 
 const AsyncAbout = Loadable({
-	loader: () => import ('./About'),
+	loader: () => import (/* webpackChunkName: "about" */ './About'),
 	loading(props) {
 		if (props.error) {
 			return <div>Error !</div>
