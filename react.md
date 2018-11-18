@@ -259,3 +259,53 @@ const AsyncFooter = LoadableVisibility({
 	}
 })
 ```
+
+### Component-based code-splitting (react-loadable)
+
+ComponentSplitting.js (Label.js is a simple stateless component):
+```
+import React from 'react'
+
+import Loadable from './Loadable'
+
+class ComponentSplitting extends React.Component {
+    constructor(props) {
+        super(props)
+
+        this.state = {
+            clicked: false
+        }
+    }
+
+    onHandleClick = () => {
+        this.setState((prevState) => ({ clicked: !prevState.clicked }))
+    }
+
+    render() {
+        const { clicked } = this.state
+        const AsyncComponentSplitting = Loadable({
+            loader: () => import (/* webpackChunkName: "label" */ './Label'),
+            loading(props) {
+                if (props.error) {
+                    return <div>Error !</div>
+                }
+        
+                if (props.pastDelay) {
+                    return <div>Loading ...</div>
+                }
+        
+                return null
+            }
+        })
+
+        return (
+            <>
+                <button onClick={this.onHandleClick}>Click me ...</button>
+                {clicked && <AsyncComponentSplitting />}
+            </>
+        )
+    }
+}
+
+export default ComponentSplitting
+```
