@@ -156,3 +156,84 @@ const Main = () => (
 export default Main
 
 ```
+
+### Route-based code-splitting (react-loadable)
+
+Loadable.js
+```
+import ReactLoadable from 'react-loadable'
+
+const Loadable = opts =>
+    ReactLoadable({
+        delay: 300,
+        ...opts
+    })
+
+export default Loadable
+```
+
+Main.js:
+```
+import React from 'react'
+import { Switch, Route } from 'react-router-dom'
+
+import Loadable from './Loadable'
+
+const AsyncHome = Loadable({
+	loader: () => import ('./Home'),
+	loading(props) {
+		if (props.error) {
+			return <div>Error !</div>
+		}
+
+		if (props.pastDelay) {
+			return <div>Loading ...</div>
+		}
+
+		return null
+	}
+})
+
+const AsyncDashboard = Loadable({
+	loader: () => import ('./Dashboard'),
+	loading(props) {
+		if (props.error) {
+			return <div>Error !</div>
+		}
+
+		if (props.pastDelay) {
+			return <div>Loading ...</div>
+		}
+
+		return null
+	}
+})
+
+const AsyncAbout = Loadable({
+	loader: () => import ('./About'),
+	loading(props) {
+		if (props.error) {
+			return <div>Error !</div>
+		}
+
+		if (props.pastDelay) {
+			return <div>Loading ...</div>
+		}
+
+		return null
+	}
+})
+
+const Main = () => (
+	<main>
+		<Switch>
+			<Route exact path='/' component={AsyncHome}/>
+			<Route path='/dashboard' component={AsyncDashboard}/>
+			<Route path='/about' component={AsyncAbout}/>
+		</Switch>
+	</main>
+)
+
+export default Main
+
+```
