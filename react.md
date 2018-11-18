@@ -237,3 +237,25 @@ const Main = () => (
 export default Main
 
 ```
+
+### Code-splitting - fetch and run js only when component is visible on screen (react-loadable-visibility)
+
+Main.js:
+```
+import LoadableVisibility from 'react-loadable-visibility/react-loadable'
+
+const AsyncFooter = LoadableVisibility({
+	loader: () => import (/* webpackChunkName: "footer" */ './Footer'),
+	loading(props) {
+		if (props.error) {
+			return <div>Error !</div>
+		}
+
+		if (props.pastDelay) {
+			return <div>Loading ...</div>
+		}
+
+		return null
+	}
+})
+```
