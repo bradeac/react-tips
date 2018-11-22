@@ -1,7 +1,11 @@
 ### Stateless React component
 
 ```
-const Component: React.SFC<any> = ({ prop1 }) => {
+interface IProps {
+    field: string,
+}
+
+const Component: React.SFC<IProps> = ({ field }: IProps): JSX.Element => {
     return (
         <div className="style">
             {prop1}
@@ -23,7 +27,7 @@ interface IState {
 }
 
 class App extends Component<IProps, IState> {
-    constructor(props: any) {
+    constructor(props: IProps) {
         super(props)
 
         this.state = {
@@ -41,7 +45,16 @@ class App extends Component<IProps, IState> {
 
 ### Return type of React class which returns an array of React components
 ```
-const CardList: React.SFC<any> = ({ robots }): ReactElement<any> => {
+interface CardListProps {
+    robots: Array<IRobot>,
+}
+
+interface IRobot {
+    name: string,
+    email string,
+}
+
+const CardList: React.SFC<CardListProps> = ({ robots }): JSX.Element => {
     return (
         robots.map((robot: IRobot) => 
             <Card 
@@ -54,4 +67,23 @@ const CardList: React.SFC<any> = ({ robots }): ReactElement<any> => {
 }
 
 export default CardList
+```
+
+Component which returns children. Example of 'type' usage instead of 'interface'
+```
+import * as React from 'react';
+
+type Props = {
+  children: JSX.Element
+}
+
+const Scroll = (props: Props) => {
+  return (
+    <div>
+      {props.children}
+    </div>
+  );
+};
+
+export default Scroll;
 ```
