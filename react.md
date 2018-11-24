@@ -309,3 +309,70 @@ class ComponentSplitting extends React.Component {
 
 export default ComponentSplitting
 ```
+
+setState has a callback function:
+```
+this.setState((prevState) => {
+		return ({ counter: this.state.counter + 1 })
+	},
+	() => console.log('callback' + this.state.counter)
+)
+```
+
+
+Context API with HOC
+contextWrapper:
+```
+function contextWrapper(WrappedComponent, Context) {
+  return class extends React.Component {
+    render() {
+      return (
+        <Context.Consumer>
+          { context => <WrappedComponent context={context} { ...this.props } /> }
+        </Context.Consumer>
+      )
+    }
+  }
+}
+```
+
+Stateless child component:
+```
+class Child extends React.Component {
+  render() {
+    console.log(this.props.context)
+    return <div>Child</div>
+  }
+}
+
+const ChildWithContext = contextWrapper(Child, AppContext)
+```
+
+How to change context:
+```
+function contextProviderWrapper(WrappedComponent, Context, initialContext) {
+  return class extends React.Component {
+    constructor(props) {
+      super(props)
+      this.state = { ...initialContext }
+    }
+    
+    // define any state changers
+    changeContext = () => {
+      this.setState({ foo: 'baz' })
+    }
+
+    render() {
+      return (
+        <Context.Provider value={{
+          ...this.state,
+          changeContext: this.changeContext
+        }} >
+          <WrappedComponent />
+        </Context.Provider>
+      )
+    }
+  }
+}
+```
+
