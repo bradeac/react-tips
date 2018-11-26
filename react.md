@@ -376,3 +376,13 @@ function contextProviderWrapper(WrappedComponent, Context, initialContext) {
 }
 ```
 
+Better (out of the box) way to do code splitting:
+```
+const Hello = React.lazy(() => import ('./Hello'))
+
+...
+
+<Suspense fallback={ <div>Loading...</div> }>
+	<Hello name={this.state.name} />
+</Suspense>
+```
