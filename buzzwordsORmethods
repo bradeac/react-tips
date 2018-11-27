@@ -1,3 +1,6 @@
 Components can return strings or number
 lazy and suspense
 React.Fragment
+Avoid prop drilling, use context API
+React.memo
+Error boundary
